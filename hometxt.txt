@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Ice Cream Shop</title>
+
+<style>
+
+/* body */
+
+body{
+margin:0;
+font-family:Arial;
+background:#f5d3d8;
+}
+
+/* navbar */
+
+.navbar{
+position:fixed;
+top:0;
+width:100%;
+background:#ff6f91;
+padding:15px;
+text-align:center;
+z-index:1000;
+}
+
+.navbar a{
+color:white;
+text-decoration:none;
+margin:20px;
+font-size:18px;
+font-weight:bold;
+}
+
+/* sections */
+
+.section{
+padding:120px 20px;
+text-align:center;
+}
+
+h1{
+font-size:50px;
+}
+
+.menu-items{
+display:flex;
+justify-content:center;
+gap:30px;
+flex-wrap:wrap;
+}
+
+.item{
+background:white;
+padding:20px;
+border-radius:10px;
+width:200px;
+box-shadow:0 5px 10px rgba(0,0,0,0.2);
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- Navbar -->
+
+<div class="navbar">
+<a href="#home">Home</a>
+<a href="#menu">Menu</a>
+<a href="#new">New Arrivals</a>
+<a href="login.html">Login</a>
+</div>
+
+<!-- Home Section -->
+
+<div class="section" id="home">
+
+<h1>Welcome to Chill & Scoop</h1>
+
+<p>Sweet scoops of happiness in every cone.</p>
+
+</div>
+
+<!-- Menu Section -->
+
+<div class="section" id="menu">
+
+<h1>Our Menu</h1>
+
+<div class="menu-items">
+
+<div class="item">
+<h3>Vanilla</h3>
+<p>Creamy classic flavor</p>
+</div>
+
+<div class="item">
+<h3>Chocolate</h3>
+<p>Rich chocolate scoop</p>
+</div>
+
+<div class="item">
+<h3>Strawberry</h3>
+<p>Fresh strawberry delight</p>
+</div>
+
+</div>
+
+</div>
+
+<!-- New Arrivals -->
+
+<div class="section" id="new">
+
+<h1>New Arrivals</h1>
+
+<p>Mango Magic Ice Cream</p>
+<p>Blueberry Blast</p>
+<p>Caramel Crunch</p>
+
+</div>
+
+</body>
+</html>
