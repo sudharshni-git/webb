@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>About Us</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:linear-gradient(#5d86c1,#2c5c9a);
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.box{
+background:white;
+padding:40px;
+border-radius:15px;
+width:500px;
+text-align:center;
+}
+
+button{
+background:blue;
+color:white;
+border:none;
+padding:10px 20px;
+border-radius:20px;
+cursor:pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="box">
+
+<h2>About Us</h2>
+
+<p>
+Chill and Scoop is a delightful ice cream parlour dedicated to spreading happiness
+through delicious scoops and refreshing flavours.
+</p>
+
+<p>
+Our mission is to serve quality, freshness, and smiles in every scoop.
+</p>
+
+<a href="ice.html">
+<button>Back to Home</button>
+</a>
+
+</div>
+
+</body>
+</html>
