@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | Chill & Scoop</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0; padding: 0; 
+            font-family: 'Montserrat', sans-serif;
+            /* FIX 1: Allow scrolling by removing overflow:hidden and setting height to auto */
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            /* FIX 2: align-items: flex-start ensures long content starts at the top and scrolls down */
+            align-items: flex-start; 
+            overflow-y: auto; 
+            background: #000;
+        }
+
+        /* --- VIDEO BACKGROUND --- */
+        .video-bg {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -2;
+            object-fit: cover;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(-45deg, rgba(255, 192, 243, 0.4), rgba(224, 179, 255, 0.4));
+            z-index: -1;
+        }
+
+        /* FIX 3: Added vertical margin (40px) so the card doesn't touch the very top/bottom edges */
+        .container { 
+            width: 100%; 
+            max-width: 500px; 
+            padding: 40px 20px; 
+            position: relative; 
+        }
+
+        /* --- GLASS CARD STYLING --- */
+        .order-card, #empty-cart-msg {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(15px);
+            padding: 35px; 
+            border-radius: 40px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.4);
+        }
+
+        #empty-cart-msg { text-align: center; display: none; }
+        #empty-cart-msg h2 { color: #4a148c; margin-bottom: 20px; }
+        .order-card { display: none; }
+
+        h1 { color: #4a148c; font-weight: 800; text-align: center; margin-bottom: 30px; font-size: 1.8rem; }
+        
+        .section-title { 
+            font-weight: 800; font-size: 0.85rem; text-transform: uppercase; 
+            color: #ff0080; margin: 20px 0 10px; display: block; 
+            border-bottom: 2px solid rgba(0,0,0,0.05); padding-bottom: 5px; 
+        }
+
+        .info-data { font-weight: 600; color: #333; background: rgba(255,255,255,0.6); padding: 10px 15px; border-radius: 12px; margin-bottom: 10px; }
+        .bill-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-weight: 600; font-size: 0.95rem; color: #444; }
+        .bill-row.highlight { color: #ff0080; }
+        
+        .bill-total { 
+            border-top: 2px dashed #ffb6e6; padding-top: 15px; margin-top: 15px; 
+            display: flex; justify-content: space-between; font-size: 1.5rem; 
+            font-weight: 800; color: #4a148c; 
+        }
+
+        .pay-option {
+            display: flex; align-items: center; padding: 12px;
+            border: 2px solid transparent; border-radius: 15px; cursor: pointer;
+            background: rgba(255,255,255,0.5); font-weight: 700;
+            transition: 0.3s; margin-bottom: 10px;
+        }
+
+        .pay-option:hover { 
+            background: #fff; transform: translateY(-3px); color: #ff0080; border-color: #ffb6e6;
+        }
+
+        .confirm-btn {
+            width: 100%; padding: 18px; border-radius: 20px; border: none;
+            background: linear-gradient(45deg, #ff66cc, #4a148c);
+            color: white; font-weight: 800; font-size: 1rem;
+            cursor: pointer; text-transform: uppercase; transition: 0.3s;
+            margin-top: 25px;
+        }
+
+        .confirm-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(74, 20, 204, 0.3); }
+        .back-link { display: block; text-align: center; margin-top: 20px; color: #4a148c; text-decoration: none; font-size: 0.85rem; font-weight: 700; }
+    </style>
+</head>
+<body>
+
+<video class="video-bg" autoplay muted loop playsinline>
+    <source src="s.mp4" type="video/mp4">
+</video>
+<div class="overlay"></div>
+
+<div class="container">
+    <div id="empty-cart-msg">
+        <h2>Your cart is empty! 🍦</h2>
+        <p>Order something yummy before checking out.</p>
+        <button class="confirm-btn" onclick="window.location.href='home.html'">Go to Menu</button>
+    </div>
+
+    <div class="order-card" id="checkout-content">
+        <h1>Checkout 🍦</h1>
+
+        <span class="section-title">Delivery To</span>
+        <div class="info-data" id="display-name">Customer</div>
+        <div class="info-data" id="display-phone">9876543210</div>
+        <div class="info-data" id="display-address">Chill Street, NY</div>
+
+        <span class="section-title">Payment</span>
+        <div class="payment-options">
+            <label class="pay-option"><input type="radio" name="payment" value="UPI"> <span style="margin-left:10px;">UPI / QR</span></label>
+            <label class="pay-option"><input type="radio" name="payment" value="COD"> <span style="margin-left:10px;">Cash on Delivery</span></label>
+        </div>
+
+        <span class="section-title">Summary</span>
+        <div id="bill-items"></div>
+        
+        <div class="bill-row" style="margin-top:15px;">
+            <span>Subtotal</span>
+            <span id="sub-total">₹0</span>
+        </div>
+        <div class="bill-row highlight">
+            <span>GST (5%)</span>
+            <span id="gst-amount">₹0</span>
+        </div>
+        <div class="bill-row">
+            <span>Delivery</span>
+            <span id="delivery-fee">₹40</span>
+        </div>
+
+        <div class="bill-total">
+            <span>Total</span>
+            <span id="final-amount">₹0</span>
+        </div>
+
+        <button class="confirm-btn" onclick="processOrder()">Confirm Order</button>
+        <a href="home.html" class="back-link">← Back to Menu</a>
+    </div>
+</div>
+
+<script>
+    window.onload = function() {
+        const loggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        if (!loggedIn) {
+            alert("Please login first!");
+            window.location.href = "strawberry.html";
+            return;
+        }
+
+        let cart = JSON.parse(localStorage.getItem('myCart')) || [];
+        if(cart.length === 0) {
+            document.getElementById('empty-cart-msg').style.display = 'block';
+            return;
+        }
+
+        document.getElementById('checkout-content').style.display = 'block';
+        document.getElementById('display-name').innerText = localStorage.getItem('userName') || "Customer";
+        document.getElementById('display-phone').innerText = localStorage.getItem('userPhone') || "9876543210";
+        document.getElementById('display-address').innerText = localStorage.getItem('userAddress') || "Chill Street, NY";
+
+        let billContainer = document.getElementById('bill-items');
+        let itemTotal = 0;
+
+        billContainer.innerHTML = cart.map(item => {
+            let price = parseInt(item.price);
+            let qty = item.qty || 1;
+            itemTotal += (price * qty);
+            return `<div class="bill-row" style="font-size:0.85rem; color:#666;">
+                        <span>${item.name} (x${qty})</span>
+                        <span>₹${price * qty}</span>
+                    </div>`;
+        }).join('');
+
+        let gst = Math.round(itemTotal * 0.05); 
+        let delivery = itemTotal > 500 ? 0 : 40; 
+        let grandTotal = itemTotal + gst + delivery;
+
+        document.getElementById('sub-total').innerText = `₹${itemTotal}`;
+        document.getElementById('gst-amount').innerText = `₹${gst}`;
+        document.getElementById('delivery-fee').innerText = delivery === 0 ? "FREE" : `₹${delivery}`;
+        document.getElementById('final-amount').innerText = `₹${grandTotal}`;
+    };
+
+    function processOrder() {
+        const paymentSelected = document.querySelector('input[name="payment"]:checked');
+        if(!paymentSelected) return alert("Select payment method!");
+        alert("Order Placed Successfully! 🍦");
+        localStorage.removeItem('myCart');
+        window.location.href = "home.html";
+    }
+</script>
+
+</body>
+</html>
